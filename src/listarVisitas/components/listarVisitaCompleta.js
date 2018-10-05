@@ -49,12 +49,12 @@ class ListarVisitaCompleta extends Component {
     }
   }
 
-  handleVerClickVerListaCompleta = (event,key) => {
-        
+  handleVerClickVerListaCompleta = (event, key) => {
+
     const numeroVisitaPulsada = event.target.id
     const { listaCompleta } = this.state
     const visitaSeleccionada = listaCompleta[numeroVisitaPulsada]
-    
+
     const fecha = visitaSeleccionada[key].conversacion[0].proxVisita
     const accionUltima = visitaSeleccionada[key].conversacion[0].textoInfoVisita
     this.setState({
@@ -63,7 +63,7 @@ class ListarVisitaCompleta extends Component {
       proxVisita: fecha,
       textoInfoVisita: accionUltima
     })
-    
+
   }
 
   handleCerrarModal = () => {
@@ -143,7 +143,7 @@ class ListarVisitaCompleta extends Component {
   }
 
   handleNuevaConversacion = () => {
-   
+
     const visitaAModificar = this.state.idTodasVisitas[this.state.vistitaPulsada]
     const listaTotalActual = this.state.listaCompleta[this.state.vistitaPulsada].conversacion
     const longitudConversacion = listaTotalActual.length
@@ -286,7 +286,7 @@ class ListarVisitaCompleta extends Component {
       listaCompleta.map((key, i) => {
         let contador = i + 1
         return (
-          Object.keys(key).map((item) => {     
+          Object.keys(key).map((item) => {
             // Si vas a utilizar la informacion pasala toda asi es un solo prop, y no 6
             return (
               <Visita
