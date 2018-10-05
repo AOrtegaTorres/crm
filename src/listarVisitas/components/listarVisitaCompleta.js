@@ -13,6 +13,7 @@ class ListarVisitaCompleta extends Component {
     super()
     this.rootRef = firebaseApp.database().ref('usuarios')
     this.user = firebaseApp.auth().currentUser
+    this.handleVerClickVerListaCompleta = this.handleVerClickVerListaCompleta.bind(this)
   }
   state = {
     modalVisible: false,
@@ -48,19 +49,21 @@ class ListarVisitaCompleta extends Component {
     }
   }
 
-  handleVerClickVerListaCompleta = (event) => {
+  handleVerClickVerListaCompleta = (event,key) => {
+        
     const numeroVisitaPulsada = event.target.id
     const { listaCompleta } = this.state
     const visitaSeleccionada = listaCompleta[numeroVisitaPulsada]
-    const fecha = visitaSeleccionada.conversacion[0].proxVisita
-    const accionUltima = visitaSeleccionada.conversacion[0].textoInfoVisita
+    
+    const fecha = visitaSeleccionada[key].conversacion[0].proxVisita
+    const accionUltima = visitaSeleccionada[key].conversacion[0].textoInfoVisita
     this.setState({
       modalVisible: true,
       vistitaPulsada: numeroVisitaPulsada,
       proxVisita: fecha,
       textoInfoVisita: accionUltima
     })
-
+    
   }
 
   handleCerrarModal = () => {
@@ -140,8 +143,7 @@ class ListarVisitaCompleta extends Component {
   }
 
   handleNuevaConversacion = () => {
-    const ref = firebaseApp.database().ref('usuarios')
-    const user = firebaseApp.auth().currentUser;
+   
     const visitaAModificar = this.state.idTodasVisitas[this.state.vistitaPulsada]
     const listaTotalActual = this.state.listaCompleta[this.state.vistitaPulsada].conversacion
     const longitudConversacion = listaTotalActual.length
@@ -153,7 +155,7 @@ class ListarVisitaCompleta extends Component {
           proxVisita: this.state.proxNuevaVisita,
         }
       }
-      ref.child(user.uid).child('visita').child(visitaAModificar).child('conversacion').update(nuevaConversacion)
+      this.rootRef.child(this.user.uid).child('visita').child(visitaAModificar).child('conversacion').update(nuevaConversacion)
     }
     else {
       let subirConversacion = longitudConversacion
@@ -164,7 +166,7 @@ class ListarVisitaCompleta extends Component {
           proxVisita: this.state.proxNuevaVisita,
         }
       }
-      ref.child(user.uid).child('visita').child(visitaAModificar).child('conversacion').update(nuevaConversacion)
+      this.rootRef.child(this.user.uid).child('visita').child(visitaAModificar).child('conversacion').update(nuevaConversacion)
     }
 
     swal('Se ha añadido nueva Accion')
@@ -284,16 +286,12 @@ class ListarVisitaCompleta extends Component {
       listaCompleta.map((key, i) => {
         let contador = i + 1
         return (
-          Object.keys(key).map((item) => {           
+          Object.keys(key).map((item) => {     
+            // Si vas a utilizar la informacion pasala toda asi es un solo prop, y no 6
             return (
               <Visita
-                direccion={key[item].calle}
-                poblacion={key[item].poblacion}
-                mantenedor={key[item].mantenedor}
-                codigoPostal={key[item].postal}
-                tipoPresupuesto={key[item].tipoPresupuesto}
-                importancia={key[item].interes}
-                administrador={key[item].nombreAdministrador}
+                data={key[item]}
+                keyData={item}
                 proxVisita={'probando'}
                 key={i}
                 contador={contador}

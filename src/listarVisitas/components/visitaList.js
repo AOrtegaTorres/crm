@@ -1,19 +1,21 @@
 import React from 'react'
 
 function  VisitaLista(props) {
+    console.log(props,'props');
+    
     return (
       <tr>
          <th scope="row">{props.contador}</th>
-            <td>{props.direccion}</td>
-            <td>{props.poblacion}</td>
-            <td>{props.codigoPostal}</td>
-            <td>{props.mantenedor}</td>
-            <td>{props.importancia}</td>
-            <td>{props.administrador}</td>
-            <td>{props.tipoPresupuesto}</td>
+            <td>{props.data.calle}</td>
+            <td>{props.data.poblacion}</td>
+            <td>{props.data.postal}</td>
+            <td>{props.data.mantenedor}</td>
+            <td>{props.data.importancia}</td>
+            <td>{props.data.administrador}</td>
+            <td>{props.data.tipoPresupuesto}</td>
             <td>{props.proxVisita}</td>
             <td>
-             <button id={props.numeroDeVisita} type="button" onClick={props.handleVerClick} className="btn btn-info mr-2">Ver</button>
+             <button id={props.numeroDeVisita} type="button" onClick={(e)=>props.handleVerClick(e,props.keyData)} className="btn btn-info mr-2">Ver</button>
              </td>
           </tr>
     )
